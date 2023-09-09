@@ -1,37 +1,46 @@
 @extends('backend.layout.backendMaster')
-@section('title', 'Add Permission')
+@section('title', 'Add Role')
 
 @section('content')
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header">
-                        @yield('title')
+                    <div class="card-header d-flex justify-content-between">
+                        <h4> @yield('title')</h4>
+                        <a href="{{ route('role.create') }}">
+                            <button class="btn btn-sm btn-success"><i class="fas fa-plus    "></i></button></a>
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped  table-bordered table-hover">
+                        <table class="table table-striped table-hover table-bordered">
                             <thead>
                                 <tr>
                                     <th>SL</th>
-                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Permission</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($permission as $item)
+                                @foreach ($role as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>
+                                            @foreach ($item->permissions as $permission)
+                                                <button class="btn btn-sm btn-info">{{ $permission->name }}</button>
+                                            @endforeach
+
+                                        </td>
+                                        <td>
                                             <div class="d-inline-flex">
-                                                <a href="{{ route('permission.edit', $item->id) }}">
+                                                <a href="{{ route('role.edit', $item->id) }}">
                                                     <button class="btn btn-success btn-sm me-2">
                                                         <i class="fa-regular fa-pen-to-square"></i>
                                                     </button>
                                                 </a>
                                                 {!! Form::open([
-                                                    'route' => ['permission.delete', $item->id],
+                                                    'route' => ['role.destroy', $item->id],
                                                     'method' => 'delete',
                                                     'id' => 'delete_form_' . $item->id,
                                                 ]) !!}
@@ -51,18 +60,6 @@
             </div>
         </div>
     </div>
-
-    @if (Session::has('msg'))
-        <script>
-            Swal.fire({
-                position: 'top-end',
-                icon: '<?php echo session::get('cls'); ?>',
-                title: '<?php echo session::get('msg'); ?>',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        </script>
-    @endif
 @endsection
 @push('script')
     <script>

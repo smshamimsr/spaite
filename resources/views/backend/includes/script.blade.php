@@ -9,6 +9,7 @@
 <script src="{{ asset('backend/asset/js/sb-admin-2.min.js') }}"></script>
 
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Page level plugins -->
 <script src="{{ asset('backend/asset/vendor/chart.js/Chart.min.js') }}"></script>

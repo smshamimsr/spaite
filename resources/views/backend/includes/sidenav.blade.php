@@ -28,6 +28,22 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#role" aria-expanded="true"
+            aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Role</span>
+        </a>
+        <div id="role" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Role </h6>
+                <a class="collapse-item" href="{{ route('role.index') }}">Role List</a>
+                <a class="collapse-item" href="{{ route('role.create') }}">Create Role</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
@@ -35,7 +51,7 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Role And Permission </h6>
+                <h6 class="collapse-header">Permission </h6>
                 <a class="collapse-item" href="{{ route('permission.index') }}">Permission List</a>
                 <a class="collapse-item" href="{{ route('permission.create') }}">Create Permission</a>
             </div>

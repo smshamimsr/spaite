@@ -62,14 +62,26 @@ class PermissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
+
+        $permission = Permission::findOrFail($id);
+        $permission->update($request->all());
+        session()->flash('msg', 'permission updated successfully');
+        session()->flash('cls', 'success');
+        return redirect()->route('permission.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Permission $permission)
     {
-        //
+        // return $permission;
+        $permission->delete();
+        session()->flash('msg', 'permission deleted successfully');
+        session()->flash('cls', 'warning');
+        return redirect()->back();
     }
 }

@@ -14,8 +14,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $role = Role::latest()->get();
-        return view('backend.authenticactin.role.index', compact('role'));
+        $role = Role::with('permissions')->latest()->get();
+        return view('backend.pages.role.index', compact('role'));
     }
 
     /**
@@ -24,7 +24,7 @@ class RoleController extends Controller
     public function create()
     {
         $permission = Permission::latest()->get();
-        return view('backend.authenticactin.role.create', compact('permission'));
+        return view('backend.pages.role.create', compact('permission'));
     }
 
     /**
@@ -33,10 +33,11 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:roles,name,',
         ]);
-        $data = $request->all();
-        return $data;
+        $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
+        $role->syncPermissions($request->permision);
+        return redirect()->route('role.index');
     }
 
     /**
@@ -50,24 +51,36 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $role = Role::with('permissions')->findOrFail($id);
+        $permission = Permission::latest()->get();
+        $data = $role->permissions()->pluck('id')->toArray();
+        return view('backend.pages.role.edit', compact('role', 'permission', 'data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:roles,name,' . $role->id,
+        ]);
+        $data = $request->all();
+        $role->update($data);
+        $role->syncPermissions($request->permision);
+        return redirect()->route('role.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        session()->flash('msg', 'role deleted success?');
+        session()->flash('cls', 'waring');
+        return redirect()->back();
     }
 }
