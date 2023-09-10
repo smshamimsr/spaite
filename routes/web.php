@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\BackendController;
 use App\Http\Controllers\Backend\PermissionController;
 
@@ -39,5 +40,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::get('role/{role}/edit', [RoleController::class, 'edit'])->name('role.edit');
     Route::put('role/{role}', [RoleController::class, 'update'])->name('role.update');
     Route::delete('role/{role}', [RoleController::class, 'destroy'])->name('role.destroy');
+
+
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('users/{id}', [UserController::class, 'delete'])->name('users.delete');
 });
 require __DIR__ . '/auth.php';
