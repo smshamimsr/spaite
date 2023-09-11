@@ -18,7 +18,9 @@
                                     <th>SL</th>
                                     <th>Role</th>
                                     <th>Permission</th>
-                                    <th>Action</th>
+                                    @can('role edit | role delete')
+                                        <th>Action</th>
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody>
@@ -26,29 +28,34 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->name }}</td>
-                                        <td>
+                                        <td class="w-75">
                                             @foreach ($item->permissions as $permission)
-                                                <button class="btn btn-sm btn-info">{{ $permission->name }}</button>
+                                                <button class="btn btn-sm btn-info mt-2">{{ $permission->name }}</button>
                                             @endforeach
 
                                         </td>
                                         <td>
                                             <div class="d-inline-flex">
-                                                <a href="{{ route('role.edit', $item->id) }}">
-                                                    <button class="btn btn-success btn-sm me-2">
-                                                        <i class="fa-regular fa-pen-to-square"></i>
-                                                    </button>
-                                                </a>
-                                                {!! Form::open([
-                                                    'route' => ['role.destroy', $item->id],
-                                                    'method' => 'delete',
-                                                    'id' => 'delete_form_' . $item->id,
-                                                ]) !!}
-                                                {!! Form::button('<i class="fa-solid fa-trash"></i>', [
-                                                    'class' => 'btn btn-sm btn-danger delete-btn',
-                                                    'data-id' => $item->id,
-                                                ]) !!}
-                                                {!! Form::close() !!}
+                                                @can('role edit')
+                                                    <a href="{{ route('role.edit', $item->id) }}">
+                                                        <button class="btn btn-success btn-sm me-2">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                    </a>
+                                                @endcan
+                                                @can('role delete')
+                                                    {!! Form::open([
+                                                        'route' => ['role.destroy', $item->id],
+                                                        'method' => 'delete',
+                                                        'id' => 'delete_form_' . $item->id,
+                                                    ]) !!}
+                                                    {!! Form::button('<i class="fa-solid fa-trash"></i>', [
+                                                        'class' => 'btn btn-sm btn-danger delete-btn',
+                                                        'data-id' => $item->id,
+                                                    ]) !!}
+                                                    {!! Form::close() !!}
+                                                @endcan
+
                                             </div>
                                         </td>
                                     </tr>

@@ -29,26 +29,31 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
                                         @foreach ($item->roles as $role)
-                                            <td>{{ $role->name }}</td>
+                                            <td class="w-75">{{ $role->name }}</td>
                                         @endforeach
 
                                         <td>
                                             <div class="d-inline-flex">
-                                                <a href="{{ route('users.edit', $item->id) }}">
-                                                    <button class="btn btn-success btn-sm me-2">
-                                                        <i class="fa-regular fa-pen-to-square"></i>
-                                                    </button>
-                                                </a>
-                                                {!! Form::open([
-                                                    'route' => ['role.destroy', $item->id],
-                                                    'method' => 'delete',
-                                                    'id' => 'delete_form_' . $item->id,
-                                                ]) !!}
-                                                {!! Form::button('<i class="fa-solid fa-trash"></i>', [
-                                                    'class' => 'btn btn-sm btn-danger delete-btn',
-                                                    'data-id' => $item->id,
-                                                ]) !!}
-                                                {!! Form::close() !!}
+                                                @can('user edit')
+                                                    <a href="{{ route('users.edit', $item->id) }}">
+                                                        <button class="btn btn-success btn-sm me-2">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                    </a>
+                                                @endcan
+                                                @can('delete user')
+                                                    {!! Form::open([
+                                                        'route' => ['role.destroy', $item->id],
+                                                        'method' => 'delete',
+                                                        'id' => 'delete_form_' . $item->id,
+                                                    ]) !!}
+                                                    {!! Form::button('<i class="fa-solid fa-trash"></i>', [
+                                                        'class' => 'btn btn-sm btn-danger delete-btn',
+                                                        'data-id' => $item->id,
+                                                    ]) !!}
+                                                    {!! Form::close() !!}
+                                                @endcan
+
                                             </div>
                                         </td>
                                     </tr>
